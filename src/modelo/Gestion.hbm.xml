@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-nov-2017 16:53:57 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="modelo.Gestion" table="GESTION" catalog="proyectoFinal">
+        <composite-id name="id" class="modelo.GestionId">
+            <key-property name="codpiezas" type="string">
+                <column name="CODPIEZAS" length="6" />
+            </key-property>
+            <key-property name="codproyecto" type="string">
+                <column name="CODPROYECTO" length="6" />
+            </key-property>
+            <key-property name="codproveedor" type="string">
+                <column name="CODPROVEEDOR" length="6" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="proveedores" class="modelo.Proveedores" update="false" insert="false" fetch="select">
+            <column name="CODPROVEEDOR" length="6" not-null="true" />
+        </many-to-one>
+        <many-to-one name="piezas" class="modelo.Piezas" update="false" insert="false" fetch="select">
+            <column name="CODPIEZAS" length="6" not-null="true" />
+        </many-to-one>
+        <many-to-one name="proyectos" class="modelo.Proyectos" update="false" insert="false" fetch="select">
+            <column name="CODPROYECTO" length="6" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="java.lang.Float">
+            <column name="CANTIDAD" precision="12" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>
