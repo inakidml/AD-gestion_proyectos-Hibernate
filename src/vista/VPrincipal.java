@@ -22,6 +22,9 @@ public class VPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	VProveedores vProveedores;
+	VPiezas vPiezas;
+	VProyectos vProyectos;
+	VAyuda vAyuda;
 
 	/**
 	 * Launch the application.
@@ -60,6 +63,16 @@ public class VPrincipal extends JFrame {
 		menuBar.add(mnAyuda);
 
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de...");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (vAyuda == null) {
+					vAyuda = new VAyuda();
+					vAyuda.setVisible(true);
+				} else {
+					vAyuda.setVisible(true);
+				}
+			}
+		});
 		mnAyuda.add(mntmAcercaDe);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,11 +89,31 @@ public class VPrincipal extends JFrame {
 		panel.add(lblGestinDeRoyectos);
 
 		JButton btnNewButton = new JButton("Proyectos");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (vProyectos == null) {
+					vProyectos = new VProyectos();
+					vProyectos.setVisible(true);
+				} else {
+					vProyectos.setVisible(true);
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNewButton.setBounds(10, 71, 142, 50);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Piezas");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (vPiezas == null) {
+					vPiezas = new VPiezas();
+					vPiezas.setVisible(true);
+				} else {
+					vPiezas.setVisible(true);
+				}
+			}
+		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNewButton_1.setBounds(162, 71, 142, 50);
 		contentPane.add(btnNewButton_1);
@@ -91,6 +124,8 @@ public class VPrincipal extends JFrame {
 				if (vProveedores == null) {
 					vProveedores = new VProveedores();
 					vProveedores.setVisible(true);
+				} else {
+					vProveedores.setVisible(true);
 				}
 			}
 		});
@@ -98,9 +133,9 @@ public class VPrincipal extends JFrame {
 		btnNewButton_2.setBounds(314, 71, 142, 50);
 		contentPane.add(btnNewButton_2);
 
-		JButton button = new JButton("Piezas");
-		button.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		button.setBounds(466, 71, 142, 50);
-		contentPane.add(button);
+		JButton btnGestiones = new JButton("Gestiones");
+		btnGestiones.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnGestiones.setBounds(466, 71, 142, 50);
+		contentPane.add(btnGestiones);
 	}
 }

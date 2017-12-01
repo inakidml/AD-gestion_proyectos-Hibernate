@@ -22,6 +22,15 @@ public class Proyectos implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
+	
+	
+	public Proyectos(String codigo, String nombre, String ciudad) {
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.ciudad = ciudad;
+	}
+
 	public Proyectos(String codigo, String nombre, String ciudad, Set<Gestion> gestions) {
 		this.codigo = codigo;
 		this.nombre = nombre;

@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 
 public class VProveedores extends JFrame {
@@ -69,7 +70,6 @@ public class VProveedores extends JFrame {
 	 */
 	public VProveedores() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 645, 606);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,23 +101,49 @@ public class VProveedores extends JFrame {
 		panel_1.add(textField);
 		textField.setColumns(10);
 
-
 		JLabel lblCdigo = new JLabel("Campo");
 		lblCdigo.setBounds(10, 32, 46, 14);
 		panel_1.add(lblCdigo);
 
 		JButton btnBuscar = new JButton("Todos");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				refrescarJTable();
+			}
+		});
 		btnBuscar.setBounds(510, 11, 89, 23);
 		panel_1.add(btnBuscar);
 
-		JButton button = new JButton("Buscar");
-		button.setBounds(510, 47, 89, 23);
-		panel_1.add(button);
-		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "Nombre", "Apellido"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "C\u00F3digo", "Nombre", "Apellido" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
+
+		JButton button = new JButton("Buscar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String busc = (String) comboBox.getSelectedItem();
+				List<Proveedores> busqueda;
+				switch (busc) {
+				case "Código":
+					busqueda = InterfaceHibernate.getProveedoresWhere("CODIGO", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Nombre":
+					busqueda = InterfaceHibernate.getProveedoresWhere("NOMBRE", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Apellido":
+					busqueda = InterfaceHibernate.getProveedoresWhere("APELLIDOS", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		button.setBounds(510, 47, 89, 23);
+		panel_1.add(button);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -279,8 +305,7 @@ public class VProveedores extends JFrame {
 		MouseListener tableMouseListener;
 
 		Object[][] data = {};
-		InterfaceHibernate iH = new InterfaceHibernate();
-		ps = iH.getProveedores();
+		ps = InterfaceHibernate.getProveedores();
 		if (ps != null) {
 			data = new Object[ps.size()][4];
 			for (int i = 0; i < ps.size(); i++) {
@@ -306,6 +331,7 @@ public class VProveedores extends JFrame {
 				}
 
 				textField_3.setText(pElegido.getCodigo());
+				textField_3.setEnabled(false);
 				textField_4.setText(pElegido.getNombre());
 				textField_5.setText(pElegido.getApellidos());
 				textField_6.setText(pElegido.getDireccion());
@@ -343,8 +369,7 @@ public class VProveedores extends JFrame {
 	public void refrescarJTable() {
 		tableModel.setRowCount(0);
 		Object[] data = {};
-		InterfaceHibernate iH = new InterfaceHibernate();
-		ps = iH.getProveedores();
+		ps = InterfaceHibernate.getProveedores();
 		if (ps != null) {
 			data = new Object[4];
 			for (int i = 0; i < ps.size(); i++) {
@@ -352,6 +377,23 @@ public class VProveedores extends JFrame {
 				data[1] = ps.get(i).getNombre();
 				data[2] = ps.get(i).getApellidos();
 				data[3] = ps.get(i).getDireccion();
+				tableModel.addRow(data);
+			}
+		}
+		table.setModel(tableModel);
+		tableModel.fireTableDataChanged();
+	}
+
+	public void rellenarJTableBusqueda(List<Proveedores> psBusq) {
+		tableModel.setRowCount(0);
+		Object[] data = {};
+		if (psBusq != null) {
+			data = new Object[4];
+			for (int i = 0; i < psBusq.size(); i++) {
+				data[0] = psBusq.get(i).getCodigo();
+				data[1] = psBusq.get(i).getNombre();
+				data[2] = psBusq.get(i).getApellidos();
+				data[3] = psBusq.get(i).getDireccion();
 				tableModel.addRow(data);
 			}
 		}
@@ -370,5 +412,4 @@ public class VProveedores extends JFrame {
 	private void modificarProveedor(Proveedores p) {
 		InterfaceHibernate.updateProveedor(p);
 	}
-	//TODO validaciones
 }

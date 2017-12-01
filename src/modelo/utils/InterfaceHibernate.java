@@ -36,9 +36,33 @@ public class InterfaceHibernate {
 		return ps;
 	}
 
+	public static List<Proveedores> getProveedoresWhere(String condicion, String valor) {
+		session = sesion.openSession();
+		String hql = "from Proveedores where " + condicion + " LIKE " + "'%" + valor + "%'";
+		Query q = session.createQuery(hql);
+		List<Proveedores> ps = q.getResultList();
+		return ps;
+	}
+
 	public static List<Piezas> getPiezas() {
 		session = sesion.openSession();
 		String hql = "from Piezas";
+		Query q = session.createQuery(hql);
+		List<Piezas> ps = q.getResultList();
+		return ps;
+	}
+
+	public static List<Piezas> getPiezasWhere(String condicion, String valor) {
+		session = sesion.openSession();
+		String hql = "from Piezas where " + condicion + " LIKE " + "'%" + valor + "%'";
+		Query q = session.createQuery(hql);
+		List<Piezas> ps = q.getResultList();
+		return ps;
+	}
+	
+	public static List<Piezas> getPiezasWhere(String condicion, float valor) {
+		session = sesion.openSession();
+		String hql = "from Piezas where " + condicion + " = " + valor ;
 		Query q = session.createQuery(hql);
 		List<Piezas> ps = q.getResultList();
 		return ps;
@@ -52,12 +76,28 @@ public class InterfaceHibernate {
 		return ps;
 	}
 
+	public static List<Proyectos> getProyectosWhere(String condicion, String valor) {
+		session = sesion.openSession();
+		String hql = "from Proyectos where " + condicion + " LIKE " + "'%" + valor + "%'";
+		Query q = session.createQuery(hql);
+		List<Proyectos> ps = q.getResultList();
+		return ps;
+	}
+
 	public static List<Gestion> getGestiones() {
 		session = sesion.openSession();
 		String hql = "from Gestion";
 		Query q = session.createQuery(hql);
 		List<Gestion> gs = q.getResultList();
 		return gs;
+	}
+
+	public static List<Gestion> getGestionesWhere(String condicion, String valor) {
+		session = sesion.openSession();
+		String hql = "from Gestion where " + condicion + " LIKE " + "'%" + valor + "%'";
+		Query q = session.createQuery(hql);
+		List<Gestion> ps = q.getResultList();
+		return ps;
 	}
 
 	public static void insertPieza(Piezas p) {
@@ -91,7 +131,7 @@ public class InterfaceHibernate {
 		ts.commit();
 		session.close();
 	}
-	
+
 	public static void updateProveedor(Proveedores p) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -100,7 +140,29 @@ public class InterfaceHibernate {
 		session.close();
 	}
 	
+	public static void updatePieza(Piezas p) {
+		session = sesion.openSession();
+		ts = session.beginTransaction();
+		session.update(p);
+		ts.commit();
+		session.close();
+	}
 	
+	public static void updateProyecto(Proyectos p) {
+		session = sesion.openSession();
+		ts = session.beginTransaction();
+		session.update(p);
+		ts.commit();
+		session.close();
+	}
+	
+	public static void updateGestion(Gestion g) {
+		session = sesion.openSession();
+		ts = session.beginTransaction();
+		session.update(g);
+		ts.commit();
+		session.close();
+	}
 
 	public static void borrarProveedor(Proveedores p) {
 		session = sesion.openSession();
