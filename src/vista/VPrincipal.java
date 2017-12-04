@@ -25,6 +25,7 @@ public class VPrincipal extends JFrame {
 	VPiezas vPiezas;
 	VProyectos vProyectos;
 	VAyuda vAyuda;
+	VGestiones vGestiones;
 
 	/**
 	 * Launch the application.
@@ -46,6 +47,7 @@ public class VPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public VPrincipal() {
+		setTitle("Principal");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 623, 191);
@@ -57,6 +59,11 @@ public class VPrincipal extends JFrame {
 		menuBar.add(mnSalir);
 
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		mnSalir.add(mntmSalir);
 
 		JMenu mnAyuda = new JMenu("Ayuda");
@@ -134,6 +141,16 @@ public class VPrincipal extends JFrame {
 		contentPane.add(btnNewButton_2);
 
 		JButton btnGestiones = new JButton("Gestiones");
+		btnGestiones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (vGestiones == null) {
+					vGestiones = new VGestiones();
+					vGestiones.setVisible(true);
+				} else {
+					vGestiones.setVisible(true);
+				}
+			}
+		});
 		btnGestiones.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnGestiones.setBounds(466, 71, 142, 50);
 		contentPane.add(btnGestiones);

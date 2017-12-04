@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Piezas;
 import modelo.Proyectos;
 import modelo.utils.InterfaceHibernate;
 
@@ -27,6 +28,8 @@ import javax.swing.Scrollable;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxEditor;
@@ -67,6 +70,7 @@ public class VProyectos extends JFrame {
 	 * Create the frame.
 	 */
 	public VProyectos() {
+		setTitle("Proyectos");
 		setResizable(false);
 		setBounds(100, 100, 645, 606);
 		contentPane = new JPanel();
@@ -113,7 +117,7 @@ public class VProyectos extends JFrame {
 		panel_1.add(btnBuscar);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "Nombre", "Ciudad"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "C\u00F3digo", "Nombre", "Ciudad" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
 
@@ -222,11 +226,6 @@ public class VProyectos extends JFrame {
 		lblAadir.setBounds(10, 11, 94, 20);
 		panel_3.add(lblAadir);
 
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(10, 48, 100, 20);
-		panel_3.add(textField_7);
-
 		textField_8 = new JTextField();
 		textField_8.setColumns(10);
 		textField_8.setBounds(120, 48, 117, 20);
@@ -248,6 +247,40 @@ public class VProyectos extends JFrame {
 				refrescarJTable();
 			}
 		});
+
+		JLabel lblErrorAnadir = new JLabel("");
+		lblErrorAnadir.setBounds(72, 16, 354, 14);
+		panel_3.add(lblErrorAnadir);
+		textField_7 = new JTextField();
+		textField_7.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				if (textField_7.getText().length() == 6) { // si es de 6 dígitos
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					List<Proyectos> lista = InterfaceHibernate.getProyectosWhere("CODIGO", textField_7.getText());
+					if (lista.size() > 0) {
+						lblErrorAnadir.setText("El código ya existe");
+					} else {
+						btnAadir.setEnabled(true);
+						lblErrorAnadir.setText("");
+					}
+
+				} else {
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					btnAadir.setEnabled(false);
+					lblErrorAnadir.setForeground(Color.RED);
+					lblErrorAnadir.setText("Número de caracteres erroneo.(Debe ser 6)");
+				}
+			}
+		});
+
+		
+		textField_7.setColumns(10);
+		textField_7.setBounds(10, 48, 100, 20);
+		panel_3.add(textField_7);
+		
+		
 		btnAadir.setBounds(510, 47, 89, 23);
 		panel_3.add(btnAadir);
 
@@ -272,7 +305,9 @@ public class VProyectos extends JFrame {
 
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
+		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
+		btnAadir.setEnabled(false);
 	}
 
 	private void rellenarJTable() {
@@ -288,7 +323,7 @@ public class VProyectos extends JFrame {
 				data[i][2] = ps.get(i).getCiudad();
 			}
 		}
-		String[] colName = { "Código", "Nombre", "Ciudad"};
+		String[] colName = { "Código", "Nombre", "Ciudad" };
 		tableMouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

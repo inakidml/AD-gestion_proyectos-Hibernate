@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VPiezas extends JFrame {
 
@@ -69,6 +71,7 @@ public class VPiezas extends JFrame {
 	 * Create the frame.
 	 */
 	public VPiezas() {
+		setTitle("Piezas");
 		setResizable(false);
 		setBounds(100, 100, 645, 606);
 		contentPane = new JPanel();
@@ -120,7 +123,7 @@ public class VPiezas extends JFrame {
 		panel_1.add(btnBuscar);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "Nombre"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "C\u00F3digo", "Nombre" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
 
@@ -251,11 +254,6 @@ public class VPiezas extends JFrame {
 		lblAadir.setBounds(10, 11, 94, 20);
 		panel_3.add(lblAadir);
 
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(10, 48, 100, 20);
-		panel_3.add(textField_7);
-
 		textField_8 = new JTextField();
 		textField_8.setColumns(10);
 		textField_8.setBounds(120, 48, 117, 20);
@@ -284,6 +282,37 @@ public class VPiezas extends JFrame {
 				refrescarJTable();
 			}
 		});
+		JLabel lblErrorAnadir = new JLabel("");
+		lblErrorAnadir.setBounds(72, 16, 354, 14);
+		panel_3.add(lblErrorAnadir);
+		textField_7 = new JTextField();
+		textField_7.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				if (textField_7.getText().length() == 6) { // si es de 6 dígitos
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					List<Piezas> lista = InterfaceHibernate.getPiezasWhere("CODIGO", textField_7.getText());
+					if (lista.size() > 0) {
+						lblErrorAnadir.setText("El código ya existe");
+					} else {
+						btnAadir.setEnabled(true);
+						lblErrorAnadir.setText("");
+					}
+
+				} else {
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					btnAadir.setEnabled(false);
+					lblErrorAnadir.setForeground(Color.RED);
+					lblErrorAnadir.setText("Número de caracteres erroneo.(Debe ser 6)");
+				}
+			}
+		});
+
+		textField_7.setColumns(10);
+		textField_7.setBounds(10, 48, 100, 20);
+		panel_3.add(textField_7);
+
 		btnAadir.setBounds(510, 47, 89, 23);
 		panel_3.add(btnAadir);
 
@@ -313,6 +342,8 @@ public class VPiezas extends JFrame {
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
+		btnAadir.setEnabled(false);
+
 	}
 
 	private void rellenarJTable() {
