@@ -99,6 +99,14 @@ public class InterfaceHibernate {
 		List<Gestion> ps = q.getResultList();
 		return ps;
 	}
+	
+	public static List<Gestion> getGestionesWhereID(String codPiezas, String codProyecto, String codProveedor) {
+		session = sesion.openSession();
+		String hql = "from Gestion where CODPIEZAS = " + codPiezas + "AND CODPROYECTO = "  + codProyecto + "AND CODPROVEEDOR = " + codProveedor;
+		Query q = session.createQuery(hql);
+		List<Gestion> ps = q.getResultList();
+		return ps;
+	}
 
 	public static void insertPieza(Piezas p) {
 		session = sesion.openSession();

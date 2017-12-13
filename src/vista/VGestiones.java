@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Gestion;
+import modelo.GestionId;
 import modelo.Piezas;
 import modelo.Proveedores;
 import modelo.Proyectos;
@@ -47,8 +49,8 @@ public class VGestiones extends JFrame {
 	private DefaultTableModel tableModel;
 	private List<Piezas> ps;
 	private JTextField textField_1;
-	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -103,22 +105,6 @@ public class VGestiones extends JFrame {
 		lblNewLabel_1.setBounds(20, 36, 101, 14);
 		panel_1.add(lblNewLabel_1);
 
-		JLabel lblPiezas_1 = new JLabel("Piezas");
-		lblPiezas_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblPiezas_1.setBounds(20, 94, 101, 14);
-		panel_1.add(lblPiezas_1);
-
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				List<Piezas> piezas = InterfaceHibernate.getPiezasWhere("CODIGO",
-						comboBox_1.getSelectedItem().toString());
-				textField_2.setText(piezas.get(0).getNombre());
-			}
-		});
-		comboBox_1.setBounds(21, 119, 177, 22);
-		panel_1.add(comboBox_1);
-
 		JLabel lblCantidad = new JLabel("Cantidad");
 		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblCantidad.setBounds(20, 209, 101, 14);
@@ -126,7 +112,7 @@ public class VGestiones extends JFrame {
 
 		JLabel lblProyecto = new JLabel("Proyecto");
 		lblProyecto.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblProyecto.setBounds(21, 152, 101, 14);
+		lblProyecto.setBounds(20, 93, 101, 14);
 		panel_1.add(lblProyecto);
 
 		JComboBox comboBox_2 = new JComboBox();
@@ -137,12 +123,8 @@ public class VGestiones extends JFrame {
 				textField_3.setText(proys.get(0).getNombre());
 			}
 		});
-		comboBox_2.setBounds(22, 177, 177, 22);
+		comboBox_2.setBounds(21, 118, 177, 22);
 		panel_1.add(comboBox_2);
-
-		JButton btnNewButton = new JButton("A\u00F1adir");
-		btnNewButton.setBounds(508, 232, 91, 23);
-		panel_1.add(btnNewButton);
 
 		textField_1 = new JTextField();
 		textField_1.setEnabled(false);
@@ -150,16 +132,10 @@ public class VGestiones extends JFrame {
 		panel_1.add(textField_1);
 		textField_1.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setEnabled(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(208, 120, 191, 20);
-		panel_1.add(textField_2);
-
 		textField_3 = new JTextField();
 		textField_3.setEnabled(false);
 		textField_3.setColumns(10);
-		textField_3.setBounds(208, 178, 191, 20);
+		textField_3.setBounds(207, 119, 191, 20);
 		panel_1.add(textField_3);
 
 		JComboBox comboBox = new JComboBox();
@@ -173,27 +149,75 @@ public class VGestiones extends JFrame {
 		comboBox.setBounds(21, 61, 177, 22);
 		panel_1.add(comboBox);
 
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		spinner.setBounds(20, 234, 51, 18);
+		panel_1.add(spinner);
+
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setBounds(81, 236, 417, 14);
+		panel_1.add(lblNewLabel_2);
+		
+		JComboBox<String> comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(21, 176, 177, 22);
+		panel_1.add(comboBox_1);
+		
+		JButton btnNewButton = new JButton("A\u00F1adir");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
+						comboBox.getSelectedItem().toString());
+				Proveedores prov = provs.get(0);
+				List<Piezas> piezas = InterfaceHibernate.getPiezasWhere("CODIGO",
+						comboBox_1.getSelectedItem().toString());
+				Piezas piz = piezas.get(0);
+				List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO",
+						comboBox_2.getSelectedItem().toString());
+				Proyectos proy = proys.get(0);
+				float cantidad = Float.parseFloat(spinner.getValue().toString());
+
+				List<Gestion> gs = InterfaceHibernate.getGestionesWhereID(piz.getCodigo(), proy.getCodigo(),
+						prov.getCodigo());
+				if (gs.size() == 0) {
+					lblNewLabel_2.setText("");
+					GestionId gId = new GestionId(piz.getCodigo(), proy.getCodigo(), prov.getCodigo());
+					Gestion g = new Gestion(gId, prov, piz, proy, cantidad);
+					InterfaceHibernate.insertGestion(g);
+				}else {
+					lblNewLabel_2.setForeground(Color.RED);
+					lblNewLabel_2.setText("Esa getión ya existe");
+				}
+
+			}
+		});
+		btnNewButton.setBounds(508, 232, 91, 23);
+		panel_1.add(btnNewButton);
+
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
 
 		rellenarJComboBox(comboBox, InterfaceHibernate.getProveedores());
-		rellenarJComboBox(comboBox_1, InterfaceHibernate.getPiezas());
 		rellenarJComboBox(comboBox_2, InterfaceHibernate.getProyectos());
 
 		List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
 				comboBox.getSelectedItem().toString());
 		textField_1.setText(provs.get(0).getNombre());
 
-		List<Piezas> piezas = InterfaceHibernate.getPiezasWhere("CODIGO", comboBox_1.getSelectedItem().toString());
-		textField_2.setText(piezas.get(0).getNombre());
-
 		List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO", comboBox_2.getSelectedItem().toString());
 		textField_3.setText(proys.get(0).getNombre());
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setBounds(20, 234, 51, 18);
-		panel_1.add(spinner);
+		JLabel label = new JLabel("Piezas");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		label.setBounds(20, 151, 101, 14);
+		panel_1.add(label);
+		
+		textField = new JTextField();
+		textField.setText((String) null);
+		textField.setEnabled(false);
+		textField.setColumns(10);
+		textField.setBounds(208, 177, 191, 20);
+		panel_1.add(textField);
+		
 
 	}
 
