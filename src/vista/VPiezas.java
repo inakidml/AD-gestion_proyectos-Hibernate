@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,11 +10,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.annotations.Parent;
+
 import modelo.Piezas;
 import modelo.utils.InterfaceHibernate;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,6 +55,9 @@ public class VPiezas extends JFrame {
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private List<Piezas> ps;
+
+	private JButton btnNewButton;
+	private JButton btnBorrar;
 
 	/**
 	 * Launch the application.
@@ -193,7 +201,7 @@ public class VPiezas extends JFrame {
 		panel_2.add(textField_6);
 		textField_6.setColumns(10);
 
-		JButton btnNewButton = new JButton("Modificar");
+		btnNewButton = new JButton("Modificar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Piezas p = new Piezas(textField_3.getText(), textField_4.getText(),
@@ -226,12 +234,17 @@ public class VPiezas extends JFrame {
 		lblDireccin_1.setBounds(374, 31, 83, 14);
 		panel_2.add(lblDireccin_1);
 
-		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Piezas p = new Piezas(textField_3.getText(), textField_4.getText(),
 						Float.parseFloat(textField_5.getText()), textField_6.getText());
-				borrarPieza(p);
+				try {
+					borrarPieza(p);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null,
+							"Esta pieza existe en una gestión, por favor, borra primero esa gestión");
+				}
 
 				textField_3.setText("");
 				textField_4.setText("");
@@ -343,6 +356,8 @@ public class VPiezas extends JFrame {
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
 		btnAadir.setEnabled(false);
+		btnNewButton.setEnabled(false);
+		btnBorrar.setEnabled(false);
 
 	}
 
@@ -381,6 +396,9 @@ public class VPiezas extends JFrame {
 				textField_4.setText(pElegido.getNombre());
 				textField_5.setText("" + pElegido.getPrecio());
 				textField_6.setText(pElegido.getDescripcion());
+
+				btnNewButton.setEnabled(true);
+				btnBorrar.setEnabled(true);
 
 				// incBorrar = inc;
 			}
@@ -429,6 +447,8 @@ public class VPiezas extends JFrame {
 		}
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
+		btnNewButton.setEnabled(false);
+		btnBorrar.setEnabled(false);
 	}
 
 	public void rellenarJTableBusqueda(List<Piezas> psBusq) {

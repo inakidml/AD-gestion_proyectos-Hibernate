@@ -15,6 +15,8 @@ import modelo.utils.InterfaceHibernate;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -49,6 +51,9 @@ public class VProyectos extends JFrame {
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private List<Proyectos> ps;
+	
+	private JButton btnNewButton;
+	private JButton btnBorrar;
 
 	/**
 	 * Launch the application.
@@ -173,7 +178,7 @@ public class VProyectos extends JFrame {
 		panel_2.add(textField_5);
 		textField_5.setColumns(10);
 
-		JButton btnNewButton = new JButton("Modificar");
+		btnNewButton = new JButton("Modificar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
@@ -200,11 +205,17 @@ public class VProyectos extends JFrame {
 		lblApellidos.setBounds(247, 31, 46, 14);
 		panel_2.add(lblApellidos);
 
-		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
-				borrarProyecto(p);
+				try {
+					borrarProyecto(p);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null,
+							"Este proyecto existe en una gestión, por favor, borra primero esa gestión");
+					e.printStackTrace();
+				}
 
 				textField_3.setText("");
 				textField_4.setText("");
@@ -308,6 +319,9 @@ public class VProyectos extends JFrame {
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
 		btnAadir.setEnabled(false);
+		
+		btnNewButton.setEnabled(false);
+		btnBorrar.setEnabled(false);
 	}
 
 	private void rellenarJTable() {
@@ -341,6 +355,9 @@ public class VProyectos extends JFrame {
 				textField_3.setEnabled(false);
 				textField_4.setText(pElegido.getNombre());
 				textField_5.setText(pElegido.getCiudad());
+				
+				btnNewButton.setEnabled(true);
+				btnBorrar.setEnabled(true);
 
 			}
 		};
@@ -386,6 +403,9 @@ public class VProyectos extends JFrame {
 		}
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
+		
+		btnNewButton.setEnabled(false);
+		btnBorrar.setEnabled(false);
 	}
 
 	public void rellenarJTableBusqueda(List<Proyectos> psBusq) {

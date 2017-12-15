@@ -2,6 +2,7 @@ package modelo.utils;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -172,7 +173,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarProveedor(Proveedores p) {
+	public static void borrarProveedor(Proveedores p) throws HibernateException{
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);
@@ -180,7 +181,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarProyecto(Proyectos p) {
+	public static void borrarProyecto(Proyectos p) throws HibernateException{
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);
@@ -188,7 +189,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarPieza(Piezas p) {
+	public static void borrarPieza(Piezas p) throws HibernateException{
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);
