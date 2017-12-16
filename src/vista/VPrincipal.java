@@ -26,6 +26,7 @@ public class VPrincipal extends JFrame {
 	VProyectos vProyectos;
 	VAyuda vAyuda;
 	VGestiones vGestiones;
+	VEstadisticas vEstadisticas;
 
 	/**
 	 * Launch the application.
@@ -65,6 +66,23 @@ public class VPrincipal extends JFrame {
 			}
 		});
 		mnSalir.add(mntmSalir);
+		
+		JMenu mnEstadsticas = new JMenu("Estadísticas");
+		menuBar.add(mnEstadsticas);
+		
+		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		mnEstadsticas.add(mntmProveedores);
+		mntmProveedores.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if(vEstadisticas==null) {
+						vEstadisticas = new VEstadisticas();
+						vEstadisticas.setVisible(true);
+					}else {
+						vEstadisticas.setVisible(true);
+					}
+				}			
+			
+		});
 
 		JMenu mnAyuda = new JMenu("Ayuda");
 		menuBar.add(mnAyuda);

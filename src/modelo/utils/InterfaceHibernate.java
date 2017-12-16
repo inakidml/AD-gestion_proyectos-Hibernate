@@ -28,6 +28,15 @@ public class InterfaceHibernate {
 		sesion = HibernateUtil.getSessionFactory();
 
 	}
+	
+	public static List<Object> consultaHQL(String consulta){
+		session = sesion.openSession();
+		String hql = consulta;
+		Query q = session.createQuery(hql);
+		List<Object> result= q.getResultList();
+		return result;
+	
+	}
 
 	public static List<Proveedores> getProveedores() {
 		session = sesion.openSession();
