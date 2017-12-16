@@ -1,0 +1,141 @@
+CREATE DATABASE  IF NOT EXISTS `proyectoFinal` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `proyectoFinal`;
+-- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
+--
+-- Host: 192.168.33.10    Database: proyectoFinal
+-- ------------------------------------------------------
+-- Server version	5.5.46-0ubuntu0.14.04.2
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `GESTION`
+--
+
+DROP TABLE IF EXISTS `GESTION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `GESTION` (
+  `CANTIDAD` float DEFAULT NULL,
+  `CODPIEZAS` varchar(6) NOT NULL,
+  `CODPROYECTO` varchar(6) NOT NULL,
+  `CODPROVEEDOR` varchar(6) NOT NULL,
+  PRIMARY KEY (`CODPIEZAS`,`CODPROYECTO`,`CODPROVEEDOR`),
+  KEY `fk_GESTION_PIEZAS1_idx` (`CODPIEZAS`),
+  KEY `fk_GESTION_PROYECTOS1_idx` (`CODPROYECTO`),
+  KEY `fk_GESTION_PROVEEDORES1_idx` (`CODPROVEEDOR`),
+  CONSTRAINT `fk_GESTION_PIEZAS1` FOREIGN KEY (`CODPIEZAS`) REFERENCES `PIEZAS` (`CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_GESTION_PROVEEDORES1` FOREIGN KEY (`CODPROVEEDOR`) REFERENCES `PROVEEDORES` (`CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_GESTION_PROYECTOS1` FOREIGN KEY (`CODPROYECTO`) REFERENCES `PROYECTOS` (`CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `GESTION`
+--
+
+LOCK TABLES `GESTION` WRITE;
+/*!40000 ALTER TABLE `GESTION` DISABLE KEYS */;
+INSERT INTO `GESTION` VALUES (100,'000001','000001','000001'),(25,'000001','000004','000003'),(48,'000002','000002','000002');
+/*!40000 ALTER TABLE `GESTION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `PIEZAS`
+--
+
+DROP TABLE IF EXISTS `PIEZAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PIEZAS` (
+  `CODIGO` varchar(6) NOT NULL,
+  `NOMBRE` varchar(20) NOT NULL,
+  `PRECIO` float NOT NULL,
+  `DESCRIPCION` text,
+  PRIMARY KEY (`CODIGO`),
+  UNIQUE KEY `CODIGO_UNIQUE` (`CODIGO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `PIEZAS`
+--
+
+LOCK TABLES `PIEZAS` WRITE;
+/*!40000 ALTER TABLE `PIEZAS` DISABLE KEYS */;
+INSERT INTO `PIEZAS` VALUES ('000001','Tornillo',0.5,'Métrica 6'),('000002','Chapa',10,'Chapa aluminio 6mm'),('000003','Engranaje',25,'Rueda dentada'),('000004','Hormigón',4.5,'Euros el kilo');
+/*!40000 ALTER TABLE `PIEZAS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `PROVEEDORES`
+--
+
+DROP TABLE IF EXISTS `PROVEEDORES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PROVEEDORES` (
+  `CODIGO` varchar(6) NOT NULL,
+  `NOMBRE` varchar(20) NOT NULL,
+  `APELLIDOS` varchar(30) NOT NULL,
+  `DIRECCION` varchar(40) NOT NULL,
+  PRIMARY KEY (`CODIGO`),
+  UNIQUE KEY `CODIGO_UNIQUE` (`CODIGO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `PROVEEDORES`
+--
+
+LOCK TABLES `PROVEEDORES` WRITE;
+/*!40000 ALTER TABLE `PROVEEDORES` DISABLE KEYS */;
+INSERT INTO `PROVEEDORES` VALUES ('000001','Charmex','Internacional','Calle los faros,2 Barcelona'),('000002','Ferretería','Etxeberria','Avda los olmos, 15 Vitoria'),('000003','Jose','Sanchez','Alameda Rekalde, 5 Bilbo');
+/*!40000 ALTER TABLE `PROVEEDORES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `PROYECTOS`
+--
+
+DROP TABLE IF EXISTS `PROYECTOS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PROYECTOS` (
+  `CODIGO` varchar(6) NOT NULL,
+  `NOMBRE` varchar(40) NOT NULL,
+  `CIUDAD` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`CODIGO`),
+  UNIQUE KEY `CODIGO_UNIQUE` (`CODIGO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `PROYECTOS`
+--
+
+LOCK TABLES `PROYECTOS` WRITE;
+/*!40000 ALTER TABLE `PROYECTOS` DISABLE KEYS */;
+INSERT INTO `PROYECTOS` VALUES ('000001','Salburua','Vitoria'),('000002','Pilar','Vitoria'),('000003','Ayuntamiento','Bilbo'),('000004','Egibide','Vitoria');
+/*!40000 ALTER TABLE `PROYECTOS` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-12-16 12:20:26
