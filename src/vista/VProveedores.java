@@ -110,7 +110,7 @@ public class VProveedores extends JFrame {
 		textField.setColumns(10);
 
 		JLabel lblCdigo = new JLabel("Campo");
-		lblCdigo.setBounds(10, 32, 46, 14);
+		lblCdigo.setBounds(10, 32, 86, 14);
 		panel_1.add(lblCdigo);
 
 		JButton btnBuscar = new JButton("Todos");
@@ -123,7 +123,7 @@ public class VProveedores extends JFrame {
 		panel_1.add(btnBuscar);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "C\u00F3digo", "Nombre", "Apellido" }));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Cod", "Nombre", "Apellido" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
 
@@ -133,7 +133,7 @@ public class VProveedores extends JFrame {
 				String busc = (String) comboBox.getSelectedItem();
 				List<Proveedores> busqueda;
 				switch (busc) {
-				case "Código":
+				case "Cod":
 					busqueda = InterfaceHibernate.getProveedoresWhere("CODIGO", textField.getText());
 					rellenarJTableBusqueda(busqueda);
 					break;
@@ -198,23 +198,23 @@ public class VProveedores extends JFrame {
 				refrescarJTable();
 			}
 		});
-		btnNewButton.setBounds(510, 47, 89, 23);
+		btnNewButton.setBounds(499, 47, 100, 23);
 		panel_2.add(btnNewButton);
 
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
-		lblNewLabel.setBounds(10, 31, 46, 14);
+		lblNewLabel.setBounds(10, 31, 94, 14);
 		panel_2.add(lblNewLabel);
 
 		JLabel lblNombre_1 = new JLabel("Nombre");
-		lblNombre_1.setBounds(120, 31, 46, 14);
+		lblNombre_1.setBounds(120, 31, 117, 14);
 		panel_2.add(lblNombre_1);
 
 		JLabel lblApellidos = new JLabel("Apellidos");
-		lblApellidos.setBounds(247, 31, 46, 14);
+		lblApellidos.setBounds(247, 31, 117, 14);
 		panel_2.add(lblApellidos);
 
 		JLabel lblDireccin_1 = new JLabel("Direcci\u00F3n");
-		lblDireccin_1.setBounds(374, 31, 46, 14);
+		lblDireccin_1.setBounds(374, 31, 117, 14);
 		panel_2.add(lblDireccin_1);
 
 		btnBorrar = new JButton("Borrar");
@@ -226,7 +226,7 @@ public class VProveedores extends JFrame {
 					borrarProveedor(p);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null,
-							"Este proveedor existe en una gestión, por favor, borra primero esa gestión");
+							"Este proveedor existe en una gestiï¿½n, por favor, borra primero esa gestiï¿½n");
 					e.printStackTrace();
 				}
 
@@ -237,7 +237,7 @@ public class VProveedores extends JFrame {
 				refrescarJTable();
 			}
 		});
-		btnBorrar.setBounds(510, 12, 89, 23);
+		btnBorrar.setBounds(499, 12, 100, 23);
 		panel_2.add(btnBorrar);
 
 		JPanel panel_3 = new JPanel();
@@ -279,7 +279,7 @@ public class VProveedores extends JFrame {
 				refrescarJTable();
 			}
 		});
-		btnAadir.setBounds(510, 47, 89, 23);
+		btnAadir.setBounds(503, 47, 96, 23);
 		panel_3.add(btnAadir);
 
 		JLabel lblErrorAnadir = new JLabel("");
@@ -290,21 +290,21 @@ public class VProveedores extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 
-				if (textField_7.getText().length() == 6) { // si es de 6 dígitos
-					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+				if (textField_7.getText().length() == 6) { // si es de 6 dï¿½gitos
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayï¿½sculas
 					List<Proveedores> lista = InterfaceHibernate.getProveedoresWhere("CODIGO", textField_7.getText());
 					if (lista.size() > 0) {
-						lblErrorAnadir.setText("El código ya existe");
+						lblErrorAnadir.setText("El cï¿½digo ya existe");
 					} else {
 						btnAadir.setEnabled(true);
 						lblErrorAnadir.setText("");
 					}
 
 				} else {
-					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayï¿½sculas
 					btnAadir.setEnabled(false);
 					lblErrorAnadir.setForeground(Color.RED);
-					lblErrorAnadir.setText("Número de caracteres erroneo.(Debe ser 6)");
+					lblErrorAnadir.setText("Nï¿½mero de caracteres erroneo.(Debe ser 6)");
 				}
 			}
 		});
@@ -314,19 +314,19 @@ public class VProveedores extends JFrame {
 		panel_3.add(textField_7);
 		
 		JLabel label_1 = new JLabel("C\u00F3digo");
-		label_1.setBounds(10, 31, 46, 14);
+		label_1.setBounds(10, 31, 100, 14);
 		panel_3.add(label_1);
 
 		JLabel label_2 = new JLabel("Nombre");
-		label_2.setBounds(120, 31, 46, 14);
+		label_2.setBounds(120, 31, 117, 14);
 		panel_3.add(label_2);
 
 		JLabel label_3 = new JLabel("Apellidos");
-		label_3.setBounds(247, 31, 46, 14);
+		label_3.setBounds(247, 31, 117, 14);
 		panel_3.add(label_3);
 
 		JLabel label_4 = new JLabel("Direcci\u00F3n");
-		label_4.setBounds(374, 31, 46, 14);
+		label_4.setBounds(374, 31, 117, 14);
 		panel_3.add(label_4);
 
 		scrollPane = new JScrollPane();
@@ -359,7 +359,7 @@ public class VProveedores extends JFrame {
 				data[i][3] = ps.get(i).getDireccion();
 			}
 		}
-		String[] colName = { "Código", "Nombre", "Apellido", "Dirección" };
+		String[] colName = { "Cï¿½digo", "Nombre", "Apellido", "Direcciï¿½n" };
 		tableMouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

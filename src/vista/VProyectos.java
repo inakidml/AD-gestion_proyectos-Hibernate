@@ -109,7 +109,7 @@ public class VProyectos extends JFrame {
 		textField.setColumns(10);
 
 		JLabel lblCdigo = new JLabel("Campo");
-		lblCdigo.setBounds(10, 32, 46, 14);
+		lblCdigo.setBounds(10, 32, 107, 14);
 		panel_1.add(lblCdigo);
 
 		JButton btnBuscar = new JButton("Todos");
@@ -122,7 +122,7 @@ public class VProyectos extends JFrame {
 		panel_1.add(btnBuscar);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "C\u00F3digo", "Nombre", "Ciudad" }));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Cod", "Nombre", "Ciudad" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
 
@@ -132,7 +132,7 @@ public class VProyectos extends JFrame {
 				String busc = (String) comboBox.getSelectedItem();
 				List<Proyectos> busqueda;
 				switch (busc) {
-				case "Código":
+				case "Cod":
 					busqueda = InterfaceHibernate.getProyectosWhere("CODIGO", textField.getText());
 					rellenarJTableBusqueda(busqueda);
 					break;
@@ -140,8 +140,8 @@ public class VProyectos extends JFrame {
 					busqueda = InterfaceHibernate.getProyectosWhere("NOMBRE", textField.getText());
 					rellenarJTableBusqueda(busqueda);
 					break;
-				case "Apellido":
-					busqueda = InterfaceHibernate.getProyectosWhere("APELLIDOS", textField.getText());
+				case "Ciudad":
+					busqueda = InterfaceHibernate.getProyectosWhere("CIUDAD", textField.getText());
 					rellenarJTableBusqueda(busqueda);
 					break;
 				default:
@@ -190,19 +190,19 @@ public class VProyectos extends JFrame {
 				refrescarJTable();
 			}
 		});
-		btnNewButton.setBounds(510, 47, 89, 23);
+		btnNewButton.setBounds(499, 47, 100, 23);
 		panel_2.add(btnNewButton);
 
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
-		lblNewLabel.setBounds(10, 31, 46, 14);
+		lblNewLabel.setBounds(10, 31, 100, 14);
 		panel_2.add(lblNewLabel);
 
 		JLabel lblNombre_1 = new JLabel("Nombre");
-		lblNombre_1.setBounds(120, 31, 46, 14);
+		lblNombre_1.setBounds(120, 31, 117, 14);
 		panel_2.add(lblNombre_1);
 
 		JLabel lblApellidos = new JLabel("Ciudad");
-		lblApellidos.setBounds(247, 31, 46, 14);
+		lblApellidos.setBounds(247, 31, 117, 14);
 		panel_2.add(lblApellidos);
 
 		btnBorrar = new JButton("Borrar");
@@ -213,7 +213,7 @@ public class VProyectos extends JFrame {
 					borrarProyecto(p);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null,
-							"Este proyecto existe en una gestión, por favor, borra primero esa gestión");
+							"Este proyecto existe en una gestiï¿½n, por favor, borra primero esa gestiï¿½n");
 					e.printStackTrace();
 				}
 
@@ -223,7 +223,7 @@ public class VProyectos extends JFrame {
 				refrescarJTable();
 			}
 		});
-		btnBorrar.setBounds(510, 12, 89, 23);
+		btnBorrar.setBounds(499, 12, 100, 23);
 		panel_2.add(btnBorrar);
 
 		JPanel panel_3 = new JPanel();
@@ -267,21 +267,21 @@ public class VProyectos extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 
-				if (textField_7.getText().length() == 6) { // si es de 6 dígitos
-					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+				if (textField_7.getText().length() == 6) { // si es de 6 dï¿½gitos
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayï¿½sculas
 					List<Proyectos> lista = InterfaceHibernate.getProyectosWhere("CODIGO", textField_7.getText());
 					if (lista.size() > 0) {
-						lblErrorAnadir.setText("El código ya existe");
+						lblErrorAnadir.setText("El cï¿½digo ya existe");
 					} else {
 						btnAadir.setEnabled(true);
 						lblErrorAnadir.setText("");
 					}
 
 				} else {
-					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayúsculas
+					textField_7.setText(textField_7.getText().toUpperCase());// Convertimos a mayï¿½sculas
 					btnAadir.setEnabled(false);
 					lblErrorAnadir.setForeground(Color.RED);
-					lblErrorAnadir.setText("Número de caracteres erroneo.(Debe ser 6)");
+					lblErrorAnadir.setText("Nï¿½mero de caracteres erroneo.(Debe ser 6)");
 				}
 			}
 		});
@@ -292,19 +292,19 @@ public class VProyectos extends JFrame {
 		panel_3.add(textField_7);
 		
 		
-		btnAadir.setBounds(510, 47, 89, 23);
+		btnAadir.setBounds(505, 47, 94, 23);
 		panel_3.add(btnAadir);
 
 		JLabel label_1 = new JLabel("C\u00F3digo");
-		label_1.setBounds(10, 31, 46, 14);
+		label_1.setBounds(10, 31, 94, 14);
 		panel_3.add(label_1);
 
 		JLabel label_2 = new JLabel("Nombre");
-		label_2.setBounds(120, 31, 46, 14);
+		label_2.setBounds(120, 31, 117, 14);
 		panel_3.add(label_2);
 
 		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(247, 31, 46, 14);
+		lblCiudad.setBounds(247, 31, 117, 14);
 		panel_3.add(lblCiudad);
 
 		scrollPane = new JScrollPane();
@@ -337,7 +337,7 @@ public class VProyectos extends JFrame {
 				data[i][2] = ps.get(i).getCiudad();
 			}
 		}
-		String[] colName = { "Código", "Nombre", "Ciudad" };
+		String[] colName = { "Cï¿½digo", "Nombre", "Ciudad" };
 		tableMouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

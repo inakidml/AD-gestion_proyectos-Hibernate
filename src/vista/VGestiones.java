@@ -48,6 +48,8 @@ public class VGestiones extends JFrame {
 	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextField textField_8;
+	private JSpinner spinner_1;
+	private Gestion gElegido; // Gestión elegida para borrar o modificar
 
 	/**
 	 * Launch the application.
@@ -316,16 +318,12 @@ public class VGestiones extends JFrame {
 		textField_7.setBounds(211, 28, 191, 20);
 		panel_2.add(textField_7);
 
-		JButton btnBorrar = new JButton("Borrar");
-		btnBorrar.setBounds(508, 27, 91, 23);
-		panel_2.add(btnBorrar);
-
 		JLabel lblProveedor = new JLabel("Proyecto");
 		lblProveedor.setBounds(10, 11, 71, 14);
 		panel_2.add(lblProveedor);
 
 		JLabel lblProyecto_1 = new JLabel("Proveedor");
-		lblProyecto_1.setBounds(211, 11, 71, 14);
+		lblProyecto_1.setBounds(211, 11, 109, 14);
 		panel_2.add(lblProyecto_1);
 
 		JLabel lblPiezas_1 = new JLabel("Piezas");
@@ -339,13 +337,38 @@ public class VGestiones extends JFrame {
 		textField_8.setBounds(10, 70, 191, 20);
 		panel_2.add(textField_8);
 
-		JSpinner spinner_1 = new JSpinner();
+		spinner_1 = new JSpinner();
 		spinner_1.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spinner_1.setBounds(211, 71, 51, 18);
 		panel_2.add(spinner_1);
 
+		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (gElegido != null) {
+					InterfaceHibernate.borrarGestion(gElegido);
+					textField_6.setText("");
+					textField_7.setText("");
+					textField_8.setText("");
+					spinner_1.setValue(1);
+					refrescarJTable();
+				}
+			}
+		});
+		btnBorrar.setBounds(490, 27, 109, 23);
+		panel_2.add(btnBorrar);
+
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(508, 69, 91, 23);
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (gElegido != null) {
+					gElegido.setCantidad(Float.parseFloat(spinner_1.getValue().toString()));
+					InterfaceHibernate.updateGestion(gElegido);
+					refrescarJTable();
+				}
+			}
+		});
+		btnModificar.setBounds(490, 69, 109, 23);
 		panel_2.add(btnModificar);
 
 	}
@@ -359,6 +382,7 @@ public class VGestiones extends JFrame {
 		if (gs != null) {
 			data = new Object[gs.size()][4];
 			for (int i = 0; i < gs.size(); i++) {
+
 				data[i][0] = gs.get(i).getProyectos().getCodigo();
 				data[i][1] = gs.get(i).getProveedores().getCodigo();
 				data[i][2] = gs.get(i).getPiezas().getCodigo();
@@ -369,22 +393,25 @@ public class VGestiones extends JFrame {
 		tableMouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// int row = table_1.rowAtPoint(e.getPoint());// get mouse-selected row
-				// int col = table_1.columnAtPoint(e.getPoint());// get mouse-selected col
-				//
-				// String codigo = (String) tableModel.getValueAt(row, 0);
-				// Piezas pElegido = null;
-				// for (Gestion g : gs) {
-				// if (codigo.equals(g.getCodigo())) {
-				// pElegido = g;
-				// }
-				// }
+				int row = table_1.rowAtPoint(e.getPoint());// get mouse-selected row
+				int col = table_1.columnAtPoint(e.getPoint());// get mouse-selected col
 
-				// textField_3.setText(pElegido.getCodigo());
-				// textField_3.setEnabled(false);
-				// textField_4.setText(pElegido.getNombre());
-				// textField_5.setText("" + pElegido.getPrecio());
-				// textField_6.setText(pElegido.getDescripcion());
+				String codigoProy = (String) tableModel.getValueAt(row, 0);
+				String codigoProv = (String) tableModel.getValueAt(row, 1);
+				String codigoPiz = (String) tableModel.getValueAt(row, 2);
+				gElegido = null;
+				for (Gestion g : gs) {
+					if (codigoProy.equals(g.getId().getCodproyecto()) && codigoProv.equals(g.getId().getCodproveedor())
+							&& codigoPiz.equals(g.getId().getCodpiezas())) {
+						gElegido = g;
+					}
+				}
+
+				textField_6.setText(gElegido.getProyectos().getNombre());
+				textField_7.setText(gElegido.getProveedores().getNombre());
+				textField_8.setText(gElegido.getPiezas().getNombre());
+				spinner_1.setValue(gElegido.getCantidad());
+
 				//
 				// btnNewButton.setEnabled(true);
 				// btnBorrar.setEnabled(true);
@@ -427,6 +454,7 @@ public class VGestiones extends JFrame {
 		if (gs != null) {
 			data = new Object[4];
 			for (int i = 0; i < gs.size(); i++) {
+
 				data[0] = gs.get(i).getProyectos().getCodigo();
 				data[1] = gs.get(i).getProveedores().getCodigo();
 				data[2] = gs.get(i).getPiezas().getCodigo();
