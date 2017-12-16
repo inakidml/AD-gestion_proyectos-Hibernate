@@ -172,30 +172,33 @@ public class VGestiones extends JFrame {
 		JButton btnNewButton = new JButton("A\u00F1adir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
-						comboBox.getSelectedItem().toString());
-				Proveedores prov = provs.get(0);
-				List<Piezas> piezas = InterfaceHibernate.getPiezasWhere("CODIGO",
-						comboBox_1.getSelectedItem().toString());
-				Piezas piz = piezas.get(0);
-				List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO",
-						comboBox_2.getSelectedItem().toString());
-				Proyectos proy = proys.get(0);
-				float cantidad = Float.parseFloat(spinner.getValue().toString());
+				if (comboBox.getSelectedItem() != null && comboBox_1.getSelectedItem() != null
+						&& comboBox_2.getSelectedItem() != null) {
+					List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
+							comboBox.getSelectedItem().toString());
+					Proveedores prov = provs.get(0);
+					List<Piezas> piezas = InterfaceHibernate.getPiezasWhere("CODIGO",
+							comboBox_1.getSelectedItem().toString());
+					Piezas piz = piezas.get(0);
+					List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO",
+							comboBox_2.getSelectedItem().toString());
+					Proyectos proy = proys.get(0);
+					float cantidad = Float.parseFloat(spinner.getValue().toString());
 
-				List<Gestion> gs = InterfaceHibernate.getGestionesWhereID(piz.getCodigo(), proy.getCodigo(),
-						prov.getCodigo());
-				if (gs.size() == 0) {
-					lblNewLabel_2.setText("");
-					GestionId gId = new GestionId(piz.getCodigo(), proy.getCodigo(), prov.getCodigo());
-					Gestion g = new Gestion(gId, prov, piz, proy, cantidad);
-					InterfaceHibernate.insertGestion(g);
-					refrescarJTable();
-				} else {
-					lblNewLabel_2.setForeground(Color.RED);
-					lblNewLabel_2.setText("Esa getión ya existe");
+					List<Gestion> gs = InterfaceHibernate.getGestionesWhereID(piz.getCodigo(), proy.getCodigo(),
+							prov.getCodigo());
+					if (gs.size() == 0) {
+						lblNewLabel_2.setText("");
+						GestionId gId = new GestionId(piz.getCodigo(), proy.getCodigo(), prov.getCodigo());
+						Gestion g = new Gestion(gId, prov, piz, proy, cantidad);
+						InterfaceHibernate.insertGestion(g);
+						refrescarJTable();
+					} else {
+						lblNewLabel_2.setForeground(Color.RED);
+						lblNewLabel_2.setText("Esa getiï¿½n ya existe");
+					}
+
 				}
-
 			}
 		});
 		btnNewButton.setBounds(508, 232, 91, 23);
@@ -237,107 +240,110 @@ public class VGestiones extends JFrame {
 
 		table_1 = new JTable();
 		scrollPane_1.setViewportView(table_1);
-		
+
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
-		
+
 		rellenarJTable();
 
 		rellenarJComboBox(comboBox, InterfaceHibernate.getProveedores());
 		rellenarJComboBox(comboBox_2, InterfaceHibernate.getProyectos());
 		rellenarJComboBox(comboBox_1, InterfaceHibernate.getPiezas());
-
-		List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
-				comboBox.getSelectedItem().toString());
-		textField_1.setText(provs.get(0).getNombre());
-		textField_2.setText(provs.get(0).getDireccion());
-
-		List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO", comboBox_2.getSelectedItem().toString());
-		textField_3.setText(proys.get(0).getNombre());
-		textField_4.setText(proys.get(0).getCiudad());
-
-		List<Piezas> piz = InterfaceHibernate.getPiezasWhere("CODIGO", comboBox_1.getSelectedItem().toString());
-		textField.setText(piz.get(0).getNombre());
-		textField_5.setText(piz.get(0).getDescripcion());
-		
+		if (comboBox.getSelectedItem() != null) {
+			List<Proveedores> provs = InterfaceHibernate.getProveedoresWhere("CODIGO",
+					comboBox.getSelectedItem().toString());
+			textField_1.setText(provs.get(0).getNombre());
+			textField_2.setText(provs.get(0).getDireccion());
+		}
+		if (comboBox_2.getSelectedItem() != null) {
+			List<Proyectos> proys = InterfaceHibernate.getProyectosWhere("CODIGO",
+					comboBox_2.getSelectedItem().toString());
+			textField_3.setText(proys.get(0).getNombre());
+			textField_4.setText(proys.get(0).getCiudad());
+		}
+		if (comboBox_1.getSelectedItem() != null) {
+			List<Piezas> piz = InterfaceHibernate.getPiezasWhere("CODIGO", comboBox_1.getSelectedItem().toString());
+			textField.setText(piz.get(0).getNombre());
+			textField_5.setText(piz.get(0).getDescripcion());
+		}
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre.setBounds(208, 37, 101, 14);
 		panel_1.add(lblNombre);
-		
+
 		JLabel lblDireccin = new JLabel("Direcci\u00F3n");
 		lblDireccin.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblDireccin.setBounds(412, 37, 101, 14);
 		panel_1.add(lblDireccin);
-		
+
 		JLabel lblNombre_1 = new JLabel("Nombre");
 		lblNombre_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre_1.setBounds(208, 94, 101, 14);
 		panel_1.add(lblNombre_1);
-		
+
 		JLabel lblCiudad = new JLabel("Ciudad");
 		lblCiudad.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblCiudad.setBounds(412, 94, 101, 14);
 		panel_1.add(lblCiudad);
-		
+
 		JLabel lblNombre_2 = new JLabel("Nombre");
 		lblNombre_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre_2.setBounds(208, 152, 101, 14);
 		panel_1.add(lblNombre_2);
-		
+
 		JLabel lblDescripcin = new JLabel("Descripci\u00F3n");
 		lblDescripcin.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblDescripcin.setBounds(412, 152, 101, 14);
 		panel_1.add(lblDescripcin);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(10, 577, 609, 102);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
-		
+
 		textField_6 = new JTextField();
 		textField_6.setText((String) null);
 		textField_6.setEnabled(false);
 		textField_6.setColumns(10);
 		textField_6.setBounds(10, 28, 191, 20);
 		panel_2.add(textField_6);
-		
+
 		textField_7 = new JTextField();
 		textField_7.setText((String) null);
 		textField_7.setEnabled(false);
 		textField_7.setColumns(10);
 		textField_7.setBounds(211, 28, 191, 20);
 		panel_2.add(textField_7);
-		
+
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.setBounds(508, 27, 91, 23);
 		panel_2.add(btnBorrar);
-		
+
 		JLabel lblProveedor = new JLabel("Proyecto");
 		lblProveedor.setBounds(10, 11, 71, 14);
 		panel_2.add(lblProveedor);
-		
+
 		JLabel lblProyecto_1 = new JLabel("Proveedor");
 		lblProyecto_1.setBounds(211, 11, 71, 14);
 		panel_2.add(lblProyecto_1);
-		
+
 		JLabel lblPiezas_1 = new JLabel("Piezas");
 		lblPiezas_1.setBounds(10, 56, 71, 14);
 		panel_2.add(lblPiezas_1);
-		
+
 		textField_8 = new JTextField();
 		textField_8.setText((String) null);
 		textField_8.setEnabled(false);
 		textField_8.setColumns(10);
 		textField_8.setBounds(10, 70, 191, 20);
 		panel_2.add(textField_8);
-		
+
 		JSpinner spinner_1 = new JSpinner();
 		spinner_1.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spinner_1.setBounds(211, 71, 51, 18);
 		panel_2.add(spinner_1);
-		
+
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.setBounds(508, 69, 91, 23);
 		panel_2.add(btnModificar);
@@ -363,16 +369,16 @@ public class VGestiones extends JFrame {
 		tableMouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				int row = table_1.rowAtPoint(e.getPoint());// get mouse-selected row
-//				int col = table_1.columnAtPoint(e.getPoint());// get mouse-selected col
-//
-//				String codigo = (String) tableModel.getValueAt(row, 0);
-//				Piezas pElegido = null;
-//				for (Gestion g : gs) {
-//					if (codigo.equals(g.getCodigo())) {
-//						pElegido = g;
-//					}
-//				}
+				// int row = table_1.rowAtPoint(e.getPoint());// get mouse-selected row
+				// int col = table_1.columnAtPoint(e.getPoint());// get mouse-selected col
+				//
+				// String codigo = (String) tableModel.getValueAt(row, 0);
+				// Piezas pElegido = null;
+				// for (Gestion g : gs) {
+				// if (codigo.equals(g.getCodigo())) {
+				// pElegido = g;
+				// }
+				// }
 
 				// textField_3.setText(pElegido.getCodigo());
 				// textField_3.setEnabled(false);
@@ -432,32 +438,34 @@ public class VGestiones extends JFrame {
 		tableModel.fireTableDataChanged();
 
 	}
-	
+
 	private <E> void rellenarJComboBox(JComboBox<String> box, List<E> lista) {
 		DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();// Rellenar JComboBox
-		String clase = lista.get(0).getClass().getName().toString();
-		switch (clase) {
-		case "modelo.Proveedores":
-			for (E e : lista) {
-				Proveedores p = (Proveedores) e;
-				modelo.addElement(p.getCodigo());
+		if (lista != null && lista.size() > 0) {
+			String clase = lista.get(0).getClass().getName().toString();
+			switch (clase) {
+			case "modelo.Proveedores":
+				for (E e : lista) {
+					Proveedores p = (Proveedores) e;
+					modelo.addElement(p.getCodigo());
+				}
+				break;
+			case "modelo.Piezas":
+				for (E e : lista) {
+					Piezas p = (Piezas) e;
+					modelo.addElement(p.getCodigo());
+				}
+				break;
+			case "modelo.Proyectos":
+				for (E e : lista) {
+					Proyectos p = (Proyectos) e;
+					modelo.addElement(p.getCodigo());
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case "modelo.Piezas":
-			for (E e : lista) {
-				Piezas p = (Piezas) e;
-				modelo.addElement(p.getCodigo());
-			}
-			break;
-		case "modelo.Proyectos":
-			for (E e : lista) {
-				Proyectos p = (Proyectos) e;
-				modelo.addElement(p.getCodigo());
-			}
-			break;
-		default:
-			break;
+			box.setModel(modelo);
 		}
-		box.setModel(modelo);
 	}
 }
