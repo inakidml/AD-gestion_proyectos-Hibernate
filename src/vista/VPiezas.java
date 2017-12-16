@@ -239,12 +239,8 @@ public class VPiezas extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Piezas p = new Piezas(textField_3.getText(), textField_4.getText(),
 						Float.parseFloat(textField_5.getText()), textField_6.getText());
-				try {
-					borrarPieza(p);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null,
-							"Esta pieza existe en una gesti�n, por favor, borra primero esa gesti�n");
-				}
+
+				borrarPieza(p);
 
 				textField_3.setText("");
 				textField_4.setText("");
@@ -399,8 +395,13 @@ public class VPiezas extends JFrame {
 
 				btnNewButton.setEnabled(true);
 				btnBorrar.setEnabled(true);
-
-				// incBorrar = inc;
+				if (e.getClickCount() > 1) {
+					JOptionPane.showMessageDialog(null,
+							"Pieza con código: " + pElegido.getCodigo() + "\n" + "Nombre: " + pElegido.getNombre()
+									+ "\n" + "Precio: " + pElegido.getPrecio() + "\n" + "Descripción: "
+									+ pElegido.getDescripcion() + ".");
+					// incBorrar = inc;
+				}
 			}
 		};
 
@@ -473,7 +474,13 @@ public class VPiezas extends JFrame {
 	}
 
 	private void borrarPieza(Piezas p) {
-		InterfaceHibernate.borrarPieza(p);
+
+		try {
+			InterfaceHibernate.borrarPieza(p);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Esta pieza existe en una gesti�n, por favor, borra primero esa gesti�n");
+		}
 	}
 
 	private void modificarPieza(Piezas p) {

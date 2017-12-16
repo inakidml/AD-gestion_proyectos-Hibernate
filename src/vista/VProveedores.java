@@ -56,6 +56,7 @@ public class VProveedores extends JFrame {
 
 	private JButton btnNewButton;
 	private JButton btnBorrar;
+
 	/**
 	 * Launch the application.
 	 */
@@ -222,13 +223,8 @@ public class VProveedores extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Proveedores p = new Proveedores(textField_3.getText(), textField_4.getText(), textField_5.getText(),
 						textField_6.getText());
-				try {
-					borrarProveedor(p);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null,
-							"Este proveedor existe en una gesti�n, por favor, borra primero esa gesti�n");
-					e.printStackTrace();
-				}
+
+				borrarProveedor(p);
 
 				textField_3.setText("");
 				textField_4.setText("");
@@ -312,7 +308,7 @@ public class VProveedores extends JFrame {
 		textField_7.setColumns(10);
 		textField_7.setBounds(10, 48, 100, 20);
 		panel_3.add(textField_7);
-		
+
 		JLabel label_1 = new JLabel("C\u00F3digo");
 		label_1.setBounds(10, 31, 100, 14);
 		panel_3.add(label_1);
@@ -340,7 +336,7 @@ public class VProveedores extends JFrame {
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
 		btnAadir.setEnabled(false);
-		
+
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
 	}
@@ -379,12 +375,17 @@ public class VProveedores extends JFrame {
 				textField_4.setText(pElegido.getNombre());
 				textField_5.setText(pElegido.getApellidos());
 				textField_6.setText(pElegido.getDireccion());
-				
+
 				btnNewButton.setEnabled(true);
 				btnBorrar.setEnabled(true);
+				if (e.getClickCount() > 1) {
+				JOptionPane.showMessageDialog(null,
+						"Proveedor con código: " + pElegido.getCodigo() + "\n" + "Nombre: " + pElegido.getNombre()
+								+ "\n" + "Apellidos: " + pElegido.getApellidos() + "\n" + "Dirección: "
+								+ pElegido.getDireccion());
 
 				// incBorrar = inc;
-			}
+			}}
 		};
 
 		table = new javax.swing.JTable();
@@ -429,7 +430,7 @@ public class VProveedores extends JFrame {
 		}
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-		
+
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
 	}
@@ -456,7 +457,13 @@ public class VProveedores extends JFrame {
 	}
 
 	private void borrarProveedor(Proveedores p) {
-		InterfaceHibernate.borrarProveedor(p);
+
+		try {
+			InterfaceHibernate.borrarProveedor(p);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Este proveedor existe en una gesti�n, por favor, borra primero esa gesti�n");
+		}
 	}
 
 	private void modificarProveedor(Proveedores p) {

@@ -51,7 +51,7 @@ public class VProyectos extends JFrame {
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private List<Proyectos> ps;
-	
+
 	private JButton btnNewButton;
 	private JButton btnBorrar;
 
@@ -209,13 +209,7 @@ public class VProyectos extends JFrame {
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
-				try {
-					borrarProyecto(p);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null,
-							"Este proyecto existe en una gesti�n, por favor, borra primero esa gesti�n");
-					e.printStackTrace();
-				}
+				borrarProyecto(p);
 
 				textField_3.setText("");
 				textField_4.setText("");
@@ -286,12 +280,10 @@ public class VProyectos extends JFrame {
 			}
 		});
 
-		
 		textField_7.setColumns(10);
 		textField_7.setBounds(10, 48, 100, 20);
 		panel_3.add(textField_7);
-		
-		
+
 		btnAadir.setBounds(505, 47, 94, 23);
 		panel_3.add(btnAadir);
 
@@ -319,7 +311,7 @@ public class VProyectos extends JFrame {
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
 		btnAadir.setEnabled(false);
-		
+
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
 	}
@@ -355,11 +347,14 @@ public class VProyectos extends JFrame {
 				textField_3.setEnabled(false);
 				textField_4.setText(pElegido.getNombre());
 				textField_5.setText(pElegido.getCiudad());
-				
+
 				btnNewButton.setEnabled(true);
 				btnBorrar.setEnabled(true);
+				if (e.getClickCount() > 1) {
+				JOptionPane.showMessageDialog(null, "Proyecto con código: " + pElegido.getCodigo() + "\n" + "Nombre: "
+						+ pElegido.getNombre() + "\n" + "Ciudad: " + pElegido.getCiudad());
 
-			}
+			}}
 		};
 
 		table = new javax.swing.JTable();
@@ -403,7 +398,7 @@ public class VProyectos extends JFrame {
 		}
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-		
+
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
 	}
@@ -429,7 +424,13 @@ public class VProyectos extends JFrame {
 	}
 
 	private void borrarProyecto(Proyectos p) {
-		InterfaceHibernate.borrarProyecto(p);
+
+		try {
+			InterfaceHibernate.borrarProyecto(p);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Este proyecto existe en una gesti�n, por favor, borra primero esa gesti�n");
+		}
 	}
 
 	private void modificarProyecto(Proyectos p) {

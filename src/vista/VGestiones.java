@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -411,12 +412,16 @@ public class VGestiones extends JFrame {
 				textField_7.setText(gElegido.getProveedores().getNombre());
 				textField_8.setText(gElegido.getPiezas().getNombre());
 				spinner_1.setValue(gElegido.getCantidad());
-
-				//
-				// btnNewButton.setEnabled(true);
-				// btnBorrar.setEnabled(true);
-
-				// incBorrar = inc;
+				if (e.getClickCount() > 1) {
+					JOptionPane.showMessageDialog(null, "Gestión: \n" + "Proyecto: "
+							+ gElegido.getProyectos().getCodigo() + ", " + gElegido.getProyectos().getNombre() + ", "
+							+ gElegido.getProyectos().getCiudad() + "" + "\n" + "Proveedor: "
+							+ gElegido.getProveedores().getCodigo() + ", " + gElegido.getProveedores().getNombre()
+							+ ", " + gElegido.getProveedores().getApellidos() + ", "
+							+ gElegido.getProveedores().getDireccion() + "\n" + "Piezas: "
+							+ gElegido.getPiezas().getCodigo() + ", " + gElegido.getPiezas().getNombre() + ", "
+							+ gElegido.getPiezas().getDescripcion() + ", \n" + "Cantidad: " + gElegido.getCantidad());
+				}
 			}
 		};
 
