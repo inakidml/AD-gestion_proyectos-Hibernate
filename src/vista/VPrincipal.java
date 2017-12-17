@@ -66,22 +66,23 @@ public class VPrincipal extends JFrame {
 			}
 		});
 		mnSalir.add(mntmSalir);
-		
+
 		JMenu mnEstadsticas = new JMenu("Estadísticas");
 		menuBar.add(mnEstadsticas);
-		
-		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+
+		JMenuItem mntmProveedores = new JMenuItem("Gráficos");
 		mnEstadsticas.add(mntmProveedores);
 		mntmProveedores.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					if(vEstadisticas==null) {
-						vEstadisticas = new VEstadisticas();
-						vEstadisticas.setVisible(true);
-					}else {
-						vEstadisticas.setVisible(true);
-					}
-				}			
-			
+			public void actionPerformed(ActionEvent arg0) {
+				if (vEstadisticas == null) {
+					vEstadisticas = new VEstadisticas();
+					vEstadisticas.setVisible(true);
+				} else {
+					vEstadisticas.refrescarGraficos();
+					vEstadisticas.setVisible(true);
+				}
+			}
+
 		});
 
 		JMenu mnAyuda = new JMenu("Ayuda");

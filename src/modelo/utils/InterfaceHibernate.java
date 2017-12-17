@@ -1,5 +1,6 @@
 package modelo.utils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -29,13 +30,12 @@ public class InterfaceHibernate {
 
 	}
 	
-	public static List<Object> consultaHQL(String consulta){
+	public static Iterator consultaHQL(String consulta){
 		session = sesion.openSession();
 		String hql = consulta;
 		Query q = session.createQuery(hql);
-		List<Object> result= q.getResultList();
-		return result;
-	
+		Iterator result= q.iterate();
+		return result;	
 	}
 
 	public static List<Proveedores> getProveedores() {
