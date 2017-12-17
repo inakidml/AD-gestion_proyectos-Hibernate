@@ -50,22 +50,23 @@ public class VEstadisticas extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		// crea el panel de pestañas
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 587, 427);
 		contentPane.add(tabbedPane);
-		rellenarGraficos();
+		rellenarGraficos();// rellena los gráficos y los añade como pestañas
 
 	}
 
 	private void rellenarGraficos() {
 
+		// Consultas hql y añadimos el chartpanel como pestaña
 		String hql = "select sum(cantidad) as cantidad, proveedores.nombre as nombreProv from Gestion group by proveedores";
 		tabbedPane.addTab("Venta de piezas", null, createDemoPanel("Piezas suministradas", hql), null);
 
 		hql = "select count(proveedores), proyectos.nombre from Gestion group by proyectos";
 		tabbedPane.addTab("Proveedores", null, createDemoPanel("Proveedores en proyectos", hql), null);
-		
+
 		hql = "select count(proyectos), proveedores.nombre from Gestion group by proveedores";
 		tabbedPane.addTab("Proyectos", null, createDemoPanel("Nº proyectos proveedor", hql), null);
 
@@ -74,17 +75,34 @@ public class VEstadisticas extends JFrame {
 
 		hql = "select count(piezas), proyectos.nombre from Gestion group by proyectos";
 		tabbedPane.addTab("Cantidad Piezas", null, createDemoPanel("Cantidad piezas diferentes proyectos", hql), null);
-		
+
 		hql = "select count(piezas), proveedores.nombre from Gestion group by proveedores";
 		tabbedPane.addTab("Tipo piezas", null, createDemoPanel("Tipo piezas suministradas proveedor", hql), null);
-		
+
 	}
 
+	// Refresca los gráficos
 	public void refrescarGraficos() {
 		tabbedPane.removeAll();
 		rellenarGraficos();
 	}
 
+	// Mete el gráfico en un panel y lo decuelve todo
+	public static JPanel createDemoPanel(String titulo, String hql) {
+		JFreeChart chart = createChart(createDataset(hql), titulo);
+		return new ChartPanel(chart);
+	}
+
+	// Crea el gráfico
+	private static JFreeChart createChart(PieDataset dataset, String titulo) {
+		JFreeChart chart = ChartFactory.createPieChart(titulo, // chart title
+				dataset, // data
+				true, // include legend
+				true, false);
+		return chart;
+	}
+
+	// Modelo del gráfico
 	private static PieDataset createDataset(String hql) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		Iterator result = InterfaceHibernate.consultaHQL(hql);
@@ -95,17 +113,4 @@ public class VEstadisticas extends JFrame {
 		return dataset;
 	}
 
-	private static JFreeChart createChart(PieDataset dataset, String titulo) {
-		JFreeChart chart = ChartFactory.createPieChart(titulo, // chart title
-				dataset, // data
-				true, // include legend
-				true, false);
-
-		return chart;
-	}
-
-	public static JPanel createDemoPanel(String titulo, String hql) {
-		JFreeChart chart = createChart(createDataset(hql), titulo);
-		return new ChartPanel(chart);
-	}
 }

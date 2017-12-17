@@ -25,19 +25,21 @@ public class InterfaceHibernate {
 	private static Transaction ts;
 
 	public InterfaceHibernate() {
-
+		// Conseguimos un sessionfactory
 		sesion = HibernateUtil.getSessionFactory();
 
 	}
-	
-	public static Iterator consultaHQL(String consulta){
+
+	// Consulta genérica
+	public static Iterator consultaHQL(String consulta) {
 		session = sesion.openSession();
 		String hql = consulta;
 		Query q = session.createQuery(hql);
-		Iterator result= q.iterate();
-		return result;	
+		Iterator result = q.iterate();
+		return result;
 	}
 
+	// Gets//////////////////////////////////////////////
 	public static List<Proveedores> getProveedores() {
 		session = sesion.openSession();
 		String hql = "from Proveedores";
@@ -69,10 +71,10 @@ public class InterfaceHibernate {
 		List<Piezas> ps = q.getResultList();
 		return ps;
 	}
-	
+
 	public static List<Piezas> getPiezasWhere(String condicion, float valor) {
 		session = sesion.openSession();
-		String hql = "from Piezas where " + condicion + " = " + valor ;
+		String hql = "from Piezas where " + condicion + " = " + valor;
 		Query q = session.createQuery(hql);
 		List<Piezas> ps = q.getResultList();
 		return ps;
@@ -109,15 +111,17 @@ public class InterfaceHibernate {
 		List<Gestion> ps = q.getResultList();
 		return ps;
 	}
-	
+
 	public static List<Gestion> getGestionesWhereID(String codPiezas, String codProyecto, String codProveedor) {
 		session = sesion.openSession();
-		String hql = "from Gestion where CODPIEZAS = " + codPiezas + "AND CODPROYECTO = "  + codProyecto + "AND CODPROVEEDOR = " + codProveedor;
+		String hql = "from Gestion where CODPIEZAS = " + codPiezas + "AND CODPROYECTO = " + codProyecto
+				+ "AND CODPROVEEDOR = " + codProveedor;
 		Query q = session.createQuery(hql);
 		List<Gestion> ps = q.getResultList();
 		return ps;
 	}
 
+	// Inserts///////////////////////////////////////////////////
 	public static void insertPieza(Piezas p) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -150,6 +154,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
+	// Updates//////////////////////////////////////////////////////////////
 	public static void updateProveedor(Proveedores p) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -157,7 +162,7 @@ public class InterfaceHibernate {
 		ts.commit();
 		session.close();
 	}
-	
+
 	public static void updatePieza(Piezas p) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -165,7 +170,7 @@ public class InterfaceHibernate {
 		ts.commit();
 		session.close();
 	}
-	
+
 	public static void updateProyecto(Proyectos p) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -173,7 +178,7 @@ public class InterfaceHibernate {
 		ts.commit();
 		session.close();
 	}
-	
+
 	public static void updateGestion(Gestion g) {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
@@ -182,7 +187,8 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarProveedor(Proveedores p) throws HibernateException{
+	// Borrar/////////////////////////////////////////////////////////////////////////
+	public static void borrarProveedor(Proveedores p) throws HibernateException {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);
@@ -190,7 +196,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarProyecto(Proyectos p) throws HibernateException{
+	public static void borrarProyecto(Proyectos p) throws HibernateException {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);
@@ -198,7 +204,7 @@ public class InterfaceHibernate {
 		session.close();
 	}
 
-	public static void borrarPieza(Piezas p) throws HibernateException{
+	public static void borrarPieza(Piezas p) throws HibernateException {
 		session = sesion.openSession();
 		ts = session.beginTransaction();
 		session.delete(p);

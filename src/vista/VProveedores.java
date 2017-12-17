@@ -57,6 +57,10 @@ public class VProveedores extends JFrame {
 	private JButton btnNewButton;
 	private JButton btnBorrar;
 
+	//////////////////////////////
+	/////Comentado en VPiezas
+	/////////////////////////////
+	
 	/**
 	 * Launch the application.
 	 */
@@ -128,32 +132,6 @@ public class VProveedores extends JFrame {
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
 
-		JButton button = new JButton("Buscar");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String busc = (String) comboBox.getSelectedItem();
-				List<Proveedores> busqueda;
-				switch (busc) {
-				case "Cod":
-					busqueda = InterfaceHibernate.getProveedoresWhere("CODIGO", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				case "Nombre":
-					busqueda = InterfaceHibernate.getProveedoresWhere("NOMBRE", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				case "Apellido":
-					busqueda = InterfaceHibernate.getProveedoresWhere("APELLIDOS", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				default:
-					break;
-				}
-			}
-		});
-		button.setBounds(510, 47, 89, 23);
-		panel_1.add(button);
-
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(10, 374, 609, 79);
@@ -185,23 +163,6 @@ public class VProveedores extends JFrame {
 		panel_2.add(textField_6);
 		textField_6.setColumns(10);
 
-		btnNewButton = new JButton("Modificar");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Proveedores p = new Proveedores(textField_3.getText(), textField_4.getText(), textField_5.getText(),
-						textField_6.getText());
-				modificarProveedor(p);
-
-				textField_3.setText("");
-				textField_4.setText("");
-				textField_5.setText("");
-				textField_6.setText("");
-				refrescarJTable();
-			}
-		});
-		btnNewButton.setBounds(499, 47, 100, 23);
-		panel_2.add(btnNewButton);
-
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
 		lblNewLabel.setBounds(10, 31, 94, 14);
 		panel_2.add(lblNewLabel);
@@ -217,24 +178,6 @@ public class VProveedores extends JFrame {
 		JLabel lblDireccin_1 = new JLabel("Direcci\u00F3n");
 		lblDireccin_1.setBounds(374, 31, 117, 14);
 		panel_2.add(lblDireccin_1);
-
-		btnBorrar = new JButton("Borrar");
-		btnBorrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Proveedores p = new Proveedores(textField_3.getText(), textField_4.getText(), textField_5.getText(),
-						textField_6.getText());
-
-				borrarProveedor(p);
-
-				textField_3.setText("");
-				textField_4.setText("");
-				textField_5.setText("");
-				textField_6.setText("");
-				refrescarJTable();
-			}
-		});
-		btnBorrar.setBounds(499, 12, 100, 23);
-		panel_2.add(btnBorrar);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
@@ -262,6 +205,95 @@ public class VProveedores extends JFrame {
 		textField_10.setBounds(374, 48, 117, 20);
 		panel_3.add(textField_10);
 
+		JLabel lblErrorAnadir = new JLabel("");
+		lblErrorAnadir.setBounds(72, 16, 354, 14);
+		panel_3.add(lblErrorAnadir);
+
+		JLabel label_1 = new JLabel("C\u00F3digo");
+		label_1.setBounds(10, 31, 100, 14);
+		panel_3.add(label_1);
+
+		JLabel label_2 = new JLabel("Nombre");
+		label_2.setBounds(120, 31, 117, 14);
+		panel_3.add(label_2);
+
+		JLabel label_3 = new JLabel("Apellidos");
+		label_3.setBounds(247, 31, 117, 14);
+		panel_3.add(label_3);
+
+		JLabel label_4 = new JLabel("Direcci\u00F3n");
+		label_4.setBounds(374, 31, 117, 14);
+		panel_3.add(label_4);
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 163, 609, 200);
+		contentPane.add(scrollPane);
+
+		table = new JTable();
+		scrollPane.setViewportView(table);
+
+		// Botones y listeners
+		JButton button = new JButton("Buscar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String busc = (String) comboBox.getSelectedItem();
+				List<Proveedores> busqueda;
+				switch (busc) {
+				case "Cod":
+					busqueda = InterfaceHibernate.getProveedoresWhere("CODIGO", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Nombre":
+					busqueda = InterfaceHibernate.getProveedoresWhere("NOMBRE", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Apellido":
+					busqueda = InterfaceHibernate.getProveedoresWhere("APELLIDOS", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		button.setBounds(510, 47, 89, 23);
+		panel_1.add(button);
+
+		btnNewButton = new JButton("Modificar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Proveedores p = new Proveedores(textField_3.getText(), textField_4.getText(), textField_5.getText(),
+						textField_6.getText());
+				modificarProveedor(p);
+
+				textField_3.setText("");
+				textField_4.setText("");
+				textField_5.setText("");
+				textField_6.setText("");
+				refrescarJTable();
+			}
+		});
+		btnNewButton.setBounds(499, 47, 100, 23);
+		panel_2.add(btnNewButton);
+
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Proveedores p = new Proveedores(textField_3.getText(), textField_4.getText(), textField_5.getText(),
+						textField_6.getText());
+
+				borrarProveedor(p);
+
+				textField_3.setText("");
+				textField_4.setText("");
+				textField_5.setText("");
+				textField_6.setText("");
+				refrescarJTable();
+			}
+		});
+		btnBorrar.setBounds(499, 12, 100, 23);
+		panel_2.add(btnBorrar);
+
 		JButton btnAadir = new JButton("A\u00F1adir");
 		btnAadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -278,9 +310,6 @@ public class VProveedores extends JFrame {
 		btnAadir.setBounds(503, 47, 96, 23);
 		panel_3.add(btnAadir);
 
-		JLabel lblErrorAnadir = new JLabel("");
-		lblErrorAnadir.setBounds(72, 16, 354, 14);
-		panel_3.add(lblErrorAnadir);
 		textField_7 = new JTextField();
 		textField_7.addKeyListener(new KeyAdapter() {
 			@Override
@@ -309,29 +338,6 @@ public class VProveedores extends JFrame {
 		textField_7.setBounds(10, 48, 100, 20);
 		panel_3.add(textField_7);
 
-		JLabel label_1 = new JLabel("C\u00F3digo");
-		label_1.setBounds(10, 31, 100, 14);
-		panel_3.add(label_1);
-
-		JLabel label_2 = new JLabel("Nombre");
-		label_2.setBounds(120, 31, 117, 14);
-		panel_3.add(label_2);
-
-		JLabel label_3 = new JLabel("Apellidos");
-		label_3.setBounds(247, 31, 117, 14);
-		panel_3.add(label_3);
-
-		JLabel label_4 = new JLabel("Direcci\u00F3n");
-		label_4.setBounds(374, 31, 117, 14);
-		panel_3.add(label_4);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 163, 609, 200);
-		contentPane.add(scrollPane);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
 		rellenarJTable();
@@ -339,7 +345,7 @@ public class VProveedores extends JFrame {
 
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
-	}
+	}//Fin constructor
 
 	private void rellenarJTable() {
 		MouseListener tableMouseListener;
@@ -379,13 +385,14 @@ public class VProveedores extends JFrame {
 				btnNewButton.setEnabled(true);
 				btnBorrar.setEnabled(true);
 				if (e.getClickCount() > 1) {
-				JOptionPane.showMessageDialog(null,
-						"Proveedor con código: " + pElegido.getCodigo() + "\n" + "Nombre: " + pElegido.getNombre()
-								+ "\n" + "Apellidos: " + pElegido.getApellidos() + "\n" + "Dirección: "
-								+ pElegido.getDireccion());
+					JOptionPane.showMessageDialog(null,
+							"Proveedor con código: " + pElegido.getCodigo() + "\n" + "Nombre: " + pElegido.getNombre()
+									+ "\n" + "Apellidos: " + pElegido.getApellidos() + "\n" + "Dirección: "
+									+ pElegido.getDireccion());
 
-				// incBorrar = inc;
-			}}
+					// incBorrar = inc;
+				}
+			}
 		};
 
 		table = new javax.swing.JTable();

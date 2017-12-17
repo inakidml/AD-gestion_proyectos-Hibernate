@@ -1,41 +1,33 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-
-import modelo.Piezas;
-import modelo.Proyectos;
-import modelo.utils.InterfaceHibernate;
-
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.Scrollable;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import modelo.Proyectos;
+import modelo.utils.InterfaceHibernate;
 
 public class VProyectos extends JFrame {
 
@@ -55,6 +47,10 @@ public class VProyectos extends JFrame {
 	private JButton btnNewButton;
 	private JButton btnBorrar;
 
+	////////////////////////////////////////
+	// Comentado en VPiezas
+	////////////////////////////////////////
+	
 	/**
 	 * Launch the application.
 	 */
@@ -112,45 +108,10 @@ public class VProyectos extends JFrame {
 		lblCdigo.setBounds(10, 32, 107, 14);
 		panel_1.add(lblCdigo);
 
-		JButton btnBuscar = new JButton("Todos");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				refrescarJTable();
-			}
-		});
-		btnBuscar.setBounds(510, 11, 89, 23);
-		panel_1.add(btnBuscar);
-
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Cod", "Nombre", "Ciudad" }));
 		comboBox.setBounds(10, 47, 107, 22);
 		panel_1.add(comboBox);
-
-		JButton button = new JButton("Buscar");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String busc = (String) comboBox.getSelectedItem();
-				List<Proyectos> busqueda;
-				switch (busc) {
-				case "Cod":
-					busqueda = InterfaceHibernate.getProyectosWhere("CODIGO", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				case "Nombre":
-					busqueda = InterfaceHibernate.getProyectosWhere("NOMBRE", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				case "Ciudad":
-					busqueda = InterfaceHibernate.getProyectosWhere("CIUDAD", textField.getText());
-					rellenarJTableBusqueda(busqueda);
-					break;
-				default:
-					break;
-				}
-			}
-		});
-		button.setBounds(510, 47, 89, 23);
-		panel_1.add(button);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -178,21 +139,6 @@ public class VProyectos extends JFrame {
 		panel_2.add(textField_5);
 		textField_5.setColumns(10);
 
-		btnNewButton = new JButton("Modificar");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
-				modificarProyecto(p);
-
-				textField_3.setText("");
-				textField_4.setText("");
-				textField_5.setText("");
-				refrescarJTable();
-			}
-		});
-		btnNewButton.setBounds(499, 47, 100, 23);
-		panel_2.add(btnNewButton);
-
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
 		lblNewLabel.setBounds(10, 31, 100, 14);
 		panel_2.add(lblNewLabel);
@@ -204,21 +150,6 @@ public class VProyectos extends JFrame {
 		JLabel lblApellidos = new JLabel("Ciudad");
 		lblApellidos.setBounds(247, 31, 117, 14);
 		panel_2.add(lblApellidos);
-
-		btnBorrar = new JButton("Borrar");
-		btnBorrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
-				borrarProyecto(p);
-
-				textField_3.setText("");
-				textField_4.setText("");
-				textField_5.setText("");
-				refrescarJTable();
-			}
-		});
-		btnBorrar.setBounds(499, 12, 100, 23);
-		panel_2.add(btnBorrar);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
@@ -241,6 +172,66 @@ public class VProyectos extends JFrame {
 		textField_9.setBounds(247, 48, 117, 20);
 		panel_3.add(textField_9);
 
+		JLabel lblErrorAnadir = new JLabel("");
+		lblErrorAnadir.setBounds(72, 16, 354, 14);
+		panel_3.add(lblErrorAnadir);
+
+		JLabel label_1 = new JLabel("C\u00F3digo");
+		label_1.setBounds(10, 31, 94, 14);
+		panel_3.add(label_1);
+
+		JLabel label_2 = new JLabel("Nombre");
+		label_2.setBounds(120, 31, 117, 14);
+		panel_3.add(label_2);
+
+		JLabel lblCiudad = new JLabel("Ciudad");
+		lblCiudad.setBounds(247, 31, 117, 14);
+		panel_3.add(lblCiudad);
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 163, 609, 200);
+		contentPane.add(scrollPane);
+
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		// Botones, listeners
+		JButton button = new JButton("Buscar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String busc = (String) comboBox.getSelectedItem();
+				List<Proyectos> busqueda;
+				switch (busc) {
+				case "Cod":
+					busqueda = InterfaceHibernate.getProyectosWhere("CODIGO", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Nombre":
+					busqueda = InterfaceHibernate.getProyectosWhere("NOMBRE", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				case "Ciudad":
+					busqueda = InterfaceHibernate.getProyectosWhere("CIUDAD", textField.getText());
+					rellenarJTableBusqueda(busqueda);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		button.setBounds(510, 47, 89, 23);
+		panel_1.add(button);
+
+		JButton btnBuscar = new JButton("Todos");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				refrescarJTable();
+			}
+		});
+		
+		btnBuscar.setBounds(510, 11, 89, 23);
+		panel_1.add(btnBuscar);
+
 		JButton btnAadir = new JButton("A\u00F1adir");
 		btnAadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -253,9 +244,39 @@ public class VProyectos extends JFrame {
 			}
 		});
 
-		JLabel lblErrorAnadir = new JLabel("");
-		lblErrorAnadir.setBounds(72, 16, 354, 14);
-		panel_3.add(lblErrorAnadir);
+		btnAadir.setBounds(505, 47, 94, 23);
+		panel_3.add(btnAadir);
+
+		btnNewButton = new JButton("Modificar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
+				modificarProyecto(p);
+
+				textField_3.setText("");
+				textField_4.setText("");
+				textField_5.setText("");
+				refrescarJTable();
+			}
+		});
+		btnNewButton.setBounds(499, 47, 100, 23);
+		panel_2.add(btnNewButton);
+
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Proyectos p = new Proyectos(textField_3.getText(), textField_4.getText(), textField_5.getText());
+				borrarProyecto(p);
+
+				textField_3.setText("");
+				textField_4.setText("");
+				textField_5.setText("");
+				refrescarJTable();
+			}
+		});
+		btnBorrar.setBounds(499, 12, 100, 23);
+		panel_2.add(btnBorrar);
+
 		textField_7 = new JTextField();
 		textField_7.addKeyListener(new KeyAdapter() {
 			@Override
@@ -284,28 +305,6 @@ public class VProyectos extends JFrame {
 		textField_7.setBounds(10, 48, 100, 20);
 		panel_3.add(textField_7);
 
-		btnAadir.setBounds(505, 47, 94, 23);
-		panel_3.add(btnAadir);
-
-		JLabel label_1 = new JLabel("C\u00F3digo");
-		label_1.setBounds(10, 31, 94, 14);
-		panel_3.add(label_1);
-
-		JLabel label_2 = new JLabel("Nombre");
-		label_2.setBounds(120, 31, 117, 14);
-		panel_3.add(label_2);
-
-		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(247, 31, 117, 14);
-		panel_3.add(lblCiudad);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 163, 609, 200);
-		contentPane.add(scrollPane);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
 		//////////////////////////////////////// Aqui empieza todo
 		//////////////////////////////////////// ////////////////////////////////////////
 		//////////////////////////////////////// ////////////////////////////////////////
@@ -314,7 +313,7 @@ public class VProyectos extends JFrame {
 
 		btnNewButton.setEnabled(false);
 		btnBorrar.setEnabled(false);
-	}
+	}// Fin constructor
 
 	private void rellenarJTable() {
 		MouseListener tableMouseListener;
@@ -351,10 +350,11 @@ public class VProyectos extends JFrame {
 				btnNewButton.setEnabled(true);
 				btnBorrar.setEnabled(true);
 				if (e.getClickCount() > 1) {
-				JOptionPane.showMessageDialog(null, "Proyecto con código: " + pElegido.getCodigo() + "\n" + "Nombre: "
-						+ pElegido.getNombre() + "\n" + "Ciudad: " + pElegido.getCiudad());
+					JOptionPane.showMessageDialog(null, "Proyecto con código: " + pElegido.getCodigo() + "\n"
+							+ "Nombre: " + pElegido.getNombre() + "\n" + "Ciudad: " + pElegido.getCiudad());
 
-			}}
+				}
+			}
 		};
 
 		table = new javax.swing.JTable();
@@ -419,6 +419,7 @@ public class VProyectos extends JFrame {
 		tableModel.fireTableDataChanged();
 	}
 
+	// Funciones hibernate
 	private void anadirProyecto(Proyectos p) {
 		InterfaceHibernate.insertProyecto(p);
 	}

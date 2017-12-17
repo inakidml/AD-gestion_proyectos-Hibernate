@@ -59,6 +59,7 @@ public class VPrincipal extends JFrame {
 		JMenu mnSalir = new JMenu("Salir");
 		menuBar.add(mnSalir);
 
+		// Salir
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mntmSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -70,6 +71,7 @@ public class VPrincipal extends JFrame {
 		JMenu mnEstadsticas = new JMenu("Estadísticas");
 		menuBar.add(mnEstadsticas);
 
+		// ventana estadísticas
 		JMenuItem mntmProveedores = new JMenuItem("Gráficos");
 		mnEstadsticas.add(mntmProveedores);
 		mntmProveedores.addActionListener(new ActionListener() {
@@ -85,6 +87,7 @@ public class VPrincipal extends JFrame {
 
 		});
 
+		// Ventana ayuda
 		JMenu mnAyuda = new JMenu("Ayuda");
 		menuBar.add(mnAyuda);
 
@@ -113,7 +116,8 @@ public class VPrincipal extends JFrame {
 		JLabel lblGestinDeRoyectos = new JLabel("Gesti\u00F3n de proyectos");
 		lblGestinDeRoyectos.setFont(new Font("Tahoma", Font.PLAIN, 32));
 		panel.add(lblGestinDeRoyectos);
-
+		
+		// Ventana proyectos
 		JButton btnNewButton = new JButton("Proyectos");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
