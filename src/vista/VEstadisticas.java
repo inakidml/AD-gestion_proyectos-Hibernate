@@ -1,12 +1,11 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
@@ -16,7 +15,6 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 import modelo.utils.InterfaceHibernate;
-import javax.swing.JTabbedPane;
 
 //https://www.tutorialspoint.com/jfreechart/jfreechart_pie_chart.htm
 
@@ -47,38 +45,44 @@ public class VEstadisticas extends JFrame {
 	public VEstadisticas() {
 		setTitle("Estadísticas");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 587, 449);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 444, 272);
+		tabbedPane.setBounds(0, 0, 587, 427);
 		contentPane.add(tabbedPane);
 		rellenarGraficos();
 
 	}
 
 	private void rellenarGraficos() {
+
 		String hql = "select sum(cantidad) as cantidad, proveedores.nombre as nombreProv from Gestion group by proveedores";
 		tabbedPane.addTab("Venta de piezas", null, createDemoPanel("Piezas suministradas", hql), null);
+
 		hql = "select count(proveedores), proyectos.nombre from Gestion group by proyectos";
 		tabbedPane.addTab("Proveedores", null, createDemoPanel("Proveedores en proyectos", hql), null);
+		
+		hql = "select count(proyectos), proveedores.nombre from Gestion group by proveedores";
+		tabbedPane.addTab("Proyectos", null, createDemoPanel("Nº proyectos proveedor", hql), null);
+
 		hql = "select sum(cantidad), piezas.nombre from Gestion group by piezas";
-		tabbedPane.addTab("Piezas", null, createDemoPanel("Cantidad de piezas", hql), null);
+		tabbedPane.addTab("Top Piezas", null, createDemoPanel("Número de piezas", hql), null);
+
+		hql = "select count(piezas), proyectos.nombre from Gestion group by proyectos";
+		tabbedPane.addTab("Cantidad Piezas", null, createDemoPanel("Cantidad piezas diferentes proyectos", hql), null);
+		
+		hql = "select count(piezas), proveedores.nombre from Gestion group by proveedores";
+		tabbedPane.addTab("Tipo piezas", null, createDemoPanel("Tipo piezas suministradas proveedor", hql), null);
+		
 	}
 
 	public void refrescarGraficos() {
 		tabbedPane.removeAll();
-		String hql = "select sum(cantidad) as cantidad, proveedores.nombre as nombreProv from Gestion group by proveedores";
-		tabbedPane.addTab("Venta de piezas", null, createDemoPanel("Piezas suministradas", hql), null);
-		hql = "select count(proveedores), proyectos.nombre from Gestion group by proyectos";
-		tabbedPane.addTab("Proveedores", null, createDemoPanel("Proveedores en proyectos", hql), null);
-
-		hql = "select sum(cantidad), piezas.nombre from Gestion group by piezas";
-		tabbedPane.addTab("Piezas", null, createDemoPanel("Cantidad de piezas", hql), null);
-
+		rellenarGraficos();
 	}
 
 	private static PieDataset createDataset(String hql) {

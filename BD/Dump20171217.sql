@@ -1,8 +1,8 @@
 CREATE DATABASE  IF NOT EXISTS `proyectoFinal` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `proyectoFinal`;
--- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 192.168.33.10    Database: proyectoFinal
+-- Host: localhost    Database: proyectoFinal
 -- ------------------------------------------------------
 -- Server version	5.5.46-0ubuntu0.14.04.2
 
@@ -45,7 +45,7 @@ CREATE TABLE `GESTION` (
 
 LOCK TABLES `GESTION` WRITE;
 /*!40000 ALTER TABLE `GESTION` DISABLE KEYS */;
-INSERT INTO `GESTION` VALUES (100,'000001','000001','000001'),(25,'000001','000004','000003'),(48,'000002','000002','000002');
+INSERT INTO `GESTION` VALUES (100,'000001','000001','000001'),(125,'000001','000004','000002'),(25,'000001','000004','000003'),(10,'000002','000002','000001'),(48,'000002','000002','000002'),(40,'000003','000001','000001'),(38,'000004','000001','000001');
 /*!40000 ALTER TABLE `GESTION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-16 12:20:26
+-- Dump completed on 2017-12-17 19:58:15
